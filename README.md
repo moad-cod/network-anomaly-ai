@@ -39,7 +39,15 @@ This project captures live traffic, detects anomalies using ML, and visualizes i
     🎯 Goal: Build and test traffic capture agent
     ✅ Tasks:
 
-    Write script using scapy or pyshark
+    Write script using scapy or pyshark 
+        Option A: Scapy → more control (best for learning)
+            pip install scapy requests
+            ⚠️ On Windows, Scapy uses WinPcap or Npcap (recommended) to capture packets.
+            👉 Install Npcap (choose “install in WinPcap compatibility mode”):
+            🔗 https://nmap.org/npcap/
+
+        Option B: Pyshark → wrapper for Wireshark, easier but needs tshark installed
+
 
     Capture: src IP, dst IP, port, protocol, length, timestamp
 
