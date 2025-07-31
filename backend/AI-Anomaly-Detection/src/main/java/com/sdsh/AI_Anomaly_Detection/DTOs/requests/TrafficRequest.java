@@ -1,8 +1,8 @@
-package com.sdsh.AI_Anomaly_Detection.DTOs;
+package com.sdsh.AI_Anomaly_Detection.DTOs.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TrafficPacketDTO {
+public class TrafficRequest {
 
     @JsonProperty("src_ip")
     private String srcIp;

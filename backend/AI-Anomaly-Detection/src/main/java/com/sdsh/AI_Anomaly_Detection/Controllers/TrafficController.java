@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdsh.AI_Anomaly_Detection.DTOs.TrafficPacketDTO;
+import com.sdsh.AI_Anomaly_Detection.DTOs.requests.TrafficRequest;
 import com.sdsh.AI_Anomaly_Detection.Services.AnomalyDetectionService;
 
 @RestController
@@ -19,7 +19,7 @@ public class TrafficController {
     }
 
     @PostMapping
-    public void receiveTraffic(@RequestBody TrafficPacketDTO packet) {
+    public void receiveTraffic(@RequestBody TrafficRequest packet) {
         System.out.println("📥 Received Packet:");
         System.out.println("From: " + packet.getSrcIp() + " → " + packet.getDstIp());
         System.out.println("Protocol: " + packet.getProtocol() + " | Port: " + packet.getPort());

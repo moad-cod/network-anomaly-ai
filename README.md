@@ -5,6 +5,42 @@ This project captures live traffic, detects anomalies using ML, and visualizes i
 ## Stack:
 - Python (Agent)
 - Spring Boot + ML (Backend)
+
+        |    AI-Anomaly-Detection/
+        ├── src/
+        │   ├── main/
+        │   │   ├── java/com/sdsh/AI_Anomaly_Detection/
+        │   │   │   ├── config/
+        │   │   │   │   └── ModelConfig.java
+        │   │   │   ├── controllers/
+        │   │   │   │   └── TrafficController.java
+        │   │   │   ├── dtos/
+        │   │   │   │   ├── requests/
+        │   │   │   │   │   └── TrafficRequest.java
+        │   │   │   │   └── responses/
+        │   │   │   │       └── AnomalyResponse.java
+        │   │   │   ├── models/
+        │   │   │   │   └── NetworkPacket.java
+        │   │   │   ├── repositories/
+        │   │   │   │   └── PacketRepository.java
+        │   │   │   ├── services/
+        │   │   │   │   ├── impl/
+        │   │   │   │   │   └── AnomalyDetectionServiceImpl.java
+        │   │   │   │   └── AnomalyDetectionService.java
+        │   │   │   └── AIAnomalyDetectionApplication.java
+        │   │   └── resources/
+        │   │       ├── data/
+        │   │       │   └── network_traffic.csv
+        │   │       ├── application.yml
+        │   │       └── application-dev.yml
+        │   └── test/
+        │       ├── java/com/sdsh/AI_Anomaly_Detection/
+        │       │   └── services/
+        │       │       └── AnomalyDetectionServiceTest.java
+        │       └── resources/
+        │           └── test-data/
+        │               └── test_traffic.csv
+
 - Django + PostgreSQL (UI)
 - Docker, Prometheus, Grafana
 
@@ -245,6 +281,22 @@ This project captures live traffic, detects anomalies using ML, and visualizes i
         Make it executable and run it:
         chmod +x ~/share_sync.sh
         nohup ~/share_sync.sh &
+
+
+
+        GATHER CREDETIALS 
+        ==>
+        {
+            Metric	           |     Tool	        Command Example
+            Packet Size/Rate  |	tshark, tcpdump	|tshark -i eth0 -T fields -e frame.len
+            Flow Duration  |	argus, nfdump	 | ra -r flows.argus -s dur
+            Protocol/Ports |	netstat, tshark	| netstat -tulnp
+            DNS Query Rate |	dnstop	        |dnstop -l 5 eth0
+            SYN Flood Rate  |	tcpdump	         |tcpdump "tcp[tcpflags] & tcp-syn != 0"
+            User-Agent/Method  |	mitmproxy, tshark |	tshark -Y "http" -e http.user_agent
+
+
+        }
     }
 
 🟠 Day 3: Spring Boot Backend + ML
