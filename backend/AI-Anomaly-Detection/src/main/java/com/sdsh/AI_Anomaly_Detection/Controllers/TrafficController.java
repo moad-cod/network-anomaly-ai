@@ -1,31 +1,31 @@
 package com.sdsh.AI_Anomaly_Detection.Controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sdsh.AI_Anomaly_Detection.DTOs.requests.TrafficRequest;
 import com.sdsh.AI_Anomaly_Detection.Services.AnomalyDetectionService;
+import com.sdsh.AI_Anomaly_Detection.models.NetworkPacket;
 
 @RestController
 @RequestMapping("/api/traffic")
 public class TrafficController {
+    private final AnomalyDetectionService anomalyDetectionService;
 
-    private final AnomalyDetectionService anomalyService;
-
-    public TrafficController(AnomalyDetectionService anomalyService) {
-        this.anomalyService = anomalyService;
+    @Autowired
+    public TrafficController(AnomalyDetectionService anomalyDetectionService) {
+        this.anomalyDetectionService = anomalyDetectionService;
     }
 
     @PostMapping
-    public void receiveTraffic(@RequestBody TrafficRequest packet) {
-        System.out.println("📥 Received Packet:");
-        System.out.println("From: " + packet.getSrcIp() + " → " + packet.getDstIp());
-        System.out.println("Protocol: " + packet.getProtocol() + " | Port: " + packet.getPort());
-        System.out.println("Length: " + packet.getLength() + " | Timestamp: " + packet.getTimestamp());
-
-        anomalyService.analyze(packet);
+    public  ResponseEntity<NetworkPacket> receiveTraffic(@RequestBody NetworkPacket packet) {
+        System.out.println("📥 Received Packet from: " + packet.getSrcIp() + " to " + packet.getDstIp());
+        // Analyze and save
+        NetworkPacket savedPacket = anomalyDetectionService.analyzeAndSave(packet);
+        return ResponseEntity.ok(savedPacket);
     }
 }
 
