@@ -11,7 +11,7 @@ import com.sdsh.AI_Anomaly_Detection.Services.AnomalyDetectionService;
 import com.sdsh.AI_Anomaly_Detection.models.NetworkPacket;
 
 @RestController
-@RequestMapping("/api/traffic")
+@RequestMapping("/api")
 public class TrafficController {
     private final AnomalyDetectionService anomalyDetectionService;
 
@@ -20,10 +20,8 @@ public class TrafficController {
         this.anomalyDetectionService = anomalyDetectionService;
     }
 
-    @PostMapping
-    public  ResponseEntity<NetworkPacket> receiveTraffic(@RequestBody NetworkPacket packet) {
-        System.out.println("📥 Received Packet from: " + packet.getSrcIp() + " to " + packet.getDstIp());
-        // Analyze and save
+    @PostMapping("/traffic")
+    public ResponseEntity<NetworkPacket> receiveTraffic(@RequestBody NetworkPacket packet) {
         NetworkPacket savedPacket = anomalyDetectionService.analyzeAndSave(packet);
         return ResponseEntity.ok(savedPacket);
     }

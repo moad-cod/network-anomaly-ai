@@ -19,6 +19,28 @@ public class AnomalyDetectionServiceImpl implements AnomalyDetectionService{
 
     @Override
     public NetworkPacket analyzeAndSave(NetworkPacket packet) {
+        boolean isAnomaly = false;
+        if (packet.getPacketRate() > 100) {
+            isAnomaly = true;
+        }
+
+        if (packet.getAvgPacketSize() > 1500) {
+            isAnomaly = true;
+        }
+
+        if (packet.getSynRate() > 0.5) {
+            isAnomaly = true;
+        }
+
+        // Example: Check if SNI list is empty (could be suspicious)
+        if (packet.getTlsSni() == null || packet.getTlsSni().isEmpty()) {
+            isAnomaly = true;
+        }
+
+        // Add more rules as needed...
+
+        packet.setAnomaly(isAnomaly);
+
         return packetRepository.save(packet);
     }
 
