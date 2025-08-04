@@ -1,27 +1,20 @@
-import json
-import requests
+from flask import Flask, request, jsonify
+import joblib
+import pandas as pd
 
-# Path to your JSON file (adjust if needed)
-json_file_path = 'C:\\Users\\SNOW\\Desktop\\Project\\CyberSecurity\\network-anomaly-ai\\agent\\shared\\network_metrics_trafic.json'
+app = Flask(__name__)
+model = joblib.load("anomaly_model.pkl")
 
+@app.route("/predict", methods=["POST"])
+def predict():
+    try:
+        data = request.get_json()
+        df = pd.DataFrame(data)
+        preds = model.predict(df)
+        results = [{"input_id": i, "result": "anomaly" if p == -1 else "normal"} for i, p in enumerate(preds)]
+        return jsonify({"predictions": results})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-# Your Spring Boot backend URL (adjust port and path as needed)
-backend_url = 'http://localhost:8080/api/traffic'
-
-def send_packet_data():
-    # Read JSON data from file
-    with open(json_file_path, 'r') as file:
-        data = json.load(file)
-    
-    # Send POST request
-    response = requests.post(backend_url, json=data)
-
-    print(f'Status code: {response.status_code}')
-    if response.status_code == 200:
-        print('Data sent successfully!')
-    else:
-        print('Failed to send data:')
-        print(response.text)
-
-if __name__ == '__main__':
-    send_packet_data()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001)
